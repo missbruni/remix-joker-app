@@ -1,0 +1,125 @@
+-each one of this modules are only concerned with their part of the url, which I think is great! 
+any other framework that i use you do have "nested routes" whereas the file system can be nested. 
+But thats all, that's as far as it goes, each individual file needs to be responsible for the whole page, 
+what is rendered, when that route is active. 
+The entire page. With remix this is not the case because of nested routing and that is 
+significant from a hard to implement stand point and as to this makes a big difference stand point. 
+
+- each one of the css files can be cached, when you build it will get a hash that represents 
+the file content, and so if you never change that. 
+That cache will live on and serve your app forever. 
+so you dont really need to worry about css code splitting on anything like that, 
+is just natural in the way that css works. So is naturally code split. Performance for the win!
+
+- JSS While you can use those with Remix, we'd like to encourage you to look into 
+more traditional approaches to CSS. Many of the problems that led to the creation of 
+these styling solutions aren't really problems in Remix, so you can often go with a 
+simpler styling approach.Basically, if it can give you a URL (or a CSS file which you can 
+import to get a URL), then it's a generally a good approach because Remix can then leverage 
+the browser platform for caching and loading/unloading. 
+
+- remix is using esbuild and not webpack, right now there is no way to customize it right 
+now unless you use pack package. 
+
+NOTES
+LOADER - all it is, export a fn that accepts a couple of args and returns a response. 
+AS a heper you can also return an obj and remix will convert this to a response that is a json response.
+
+RUNTIME VALIDATION
+runtime data validation, they use invariant. (not sure if it works with io-ts) but I dont see why not. 
+
+QUESTIONS 
+Redux
+what state do you out in redux? If most of your state is from the API, then that's what loaders are for.
+if there anything, use context.90% of us will nto need redux.
+
+
+
+IMAGE
+Remix image optimization is on the books. For now, needs to use external one. 
+
+ERROR
+ErrorBoundary - Unexpected Errors (came first)
+CatchBoundary - Responses you throw which are Expected Errors
+
+You could probably makes them works as one. But it makes sense to separate. 
+
+
+UI Libraries
+Is it possible to use CSS Frameworks like Material UI or Bootstrap?
+Yes, you just have to load the CSS in the link functions and use their classes. 
+
+STYLING CSS LIBRARIES
+I can leverage the css cascade, entire reason why all this solutions were created, to be able to 
+side step the css cascade. Css modules if for, styled components or css in jsx is just so you 
+can namespace everything so you dont have to worry about the cascade. 
+But here, we leverage it, So you are saying, I actually like what this class
+offers, but I also want to add these extra things. 
+That is leveraging the cascade. 
+And remix allows that without worrying about other content. 
+
+
+PROGRESSIVE MIGRATION FROM CRA OR NEXT
+upgrade to react router 6
+update your directory to match remix conventionally
+install remix and make sure everything runs server render
+deploy infra for hosting
+
+FROM NEXT
+two servers, point to different servers.
+
+HOW DO YOU DO API ROUTES (next does)
+Sometimes you need an api for a web hook or whatever. Limited to JSON. 
+You can host your api via remix via cloudworkers
+
+JAVASCRIPT - MIC DROP MOMENT
+So lets look at our app, one more time. Open the network tab, refresh. 
+Move around, where is the javascript yall ? This whole time, we've been doing this without js at all. 
+Do i like care about an app that can run without javascript? No by itself. what I like is that my app will work 
+before the js is loaded. Talk about fast my friends... 
+
+We owe everything between the the html tags. 
+So if you haven't noticed we've been doing full page reloads, when navigating. 
+Add scripts to app via scripts tag. 
+
+Scripts also can make the form management better (create joke page) - go to new, update form to Form
+App still works without JS, try 3G on delete with network tab, BOOM
+
+Server errors can be logged on the client! add console.error() to one of them and you can see server 
+errors on the console, with stack trace and everything.
+
+PREFETCHING 
+Add prefetch=intent to joke links with network tab and show prefetching, as you go close remix knows what to fetch.
+show it on 3G as well, makes it so seamless.
+
+There is a reason why JS is included on the page but your app can work without it and thats awesome
+
+OPTIMISTIC UI
+For example o the add new joke form, on a slow 3g network once you click add, we do not have any pending state in here. 
+I dont know that something is going on. Before, without JS at least we were getting the full page reload browser signs,
+but now because we progressively enhanced with with prevent default. Fetch API post. 
+There is a an easy way to solve this though. useTransition 
+
+You can make it looks super fast, if an error occurs, it will fallback into the error and catch boundaries. 
+As cool as it is we can fallback, 
+
+
+WHAT ABOUT SPINNERS
+of course there might be some cases where we cant run away, big server calculations but most things should
+be able to be cache on the server.
+
+REACT SERVER COMPONENTS
+the problems that it can solve is already solved by remix, remix is well position to take advantage of
+some use cases, but they are pretty limited. 
+
+DEPLOY
+Fly io
+Identifies my prisma
+This is going to use the docker file to build our docker image
+is going to send our docker image to fly servers where fly will get ir started
+start with migration scripts to do the prisma migrate deploy
+overtime as we change our db schema, we will have more and more migration scripts to migrate all our dbs
+for us. First time it takes a little longer as it needs to cache all of our stuff
+
+
+
